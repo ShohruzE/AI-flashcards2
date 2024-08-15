@@ -16,7 +16,7 @@ export default function Navbar() {
           <div className="flex flex-row items-center gap-8">
             <ul className="flex items-center gap-8">
               <li>
-                <Link href="/main">Home</Link>
+                <Link href="/explore">Explore</Link>
               </li>
               <li>
                 <Link href="/library">My Library</Link>
