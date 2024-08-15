@@ -82,7 +82,7 @@ export default function CreateFlashcardsForm() {
                 <Input type="text" placeholder="Enter a topic..." {...field} />
               </FormControl>
               <FormDescription>
-                Enter any topic and we'll generate a flashcard set for you!
+                Enter any topic and we&apos;ll create a flashcard set for you!
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -109,7 +109,7 @@ export default function CreateFlashcardsForm() {
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select the difficulty of the flashcards you want to generate
+                Select the difficulty of the flashcards you want to create
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -139,7 +139,7 @@ export default function CreateFlashcardsForm() {
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select how many flashcards you want to generate
+                Select how many flashcards you want to create
               </FormDescription>
               <FormMessage />
             </FormItem>
