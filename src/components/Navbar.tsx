@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 export default function Navbar() {
   return (
@@ -16,6 +17,9 @@ export default function Navbar() {
           <div className="flex flex-row items-center gap-8">
             <ul className="flex items-center gap-8">
               <li>
+                <Link href="/pricing">Pricing</Link>
+              </li>
+              <li>
                 <Link href="/explore">Explore</Link>
               </li>
               <li>
@@ -24,13 +28,14 @@ export default function Navbar() {
               <li>
                 <Link href="/create">Create</Link>
               </li>
-              <li>
+              <li className="flex justify-center items-center gap-2">
                 <SignedOut>
                   <Button variant="secondary">
                     <SignInButton />
                   </Button>
                 </SignedOut>
                 <SignedIn>
+                  <Badge variant="secondary">Basic</Badge>
                   <UserButton />
                 </SignedIn>
               </li>
