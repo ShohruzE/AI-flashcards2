@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardHeader,
@@ -8,7 +10,29 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+import getStripe from "@/app/api/checkout_session";
+
 export default function Pricing() {
+  const handleSubmit = async () => {
+    const checkoutSession = await fetch("/api/pricing", {
+      method: "POST",
+      headers: {
+        origin: "http://localhost:3000",
+      },
+    });
+    const checkoutSessionJson = await checkoutSession.json();
+    console.log(checkoutSessionJson);
+    const stripe = await getStripe();
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    });
+
+    if (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <section className="">
       <div className="container mx-auto bg-slate-300 p-24">
@@ -50,7 +74,7 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button>Purchase</Button>
+                <Button onClick={handleSubmit}>Purchase</Button>
               </CardFooter>
             </Card>
           </div>
