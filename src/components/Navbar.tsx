@@ -6,8 +6,8 @@ import { Badge } from "./ui/badge";
 
 export default function Navbar() {
   return (
-    <header className="bg-[#5D4037] text-[#FFC107] py-8">
-      <div className="container mx-auto">
+    <header className="bg-[#4A2F2D] text-[#FFC107] py-8">
+      <div className="px-10">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="font-extrabold text-2xl hover:text-[#FFA000]">
@@ -17,16 +17,16 @@ export default function Navbar() {
           <div className="flex flex-row items-center gap-8">
             <ul className="flex items-center gap-8">
               <li>
-                <Link className="hover:text-[#FFA000]" href="/pricing">Pricing</Link>
+                <Link className="hover:text-[#FFA000] font-bold" href="/pricing">Pricing</Link>
               </li>
               <li>
-                <Link className="hover:text-[#FFA000]" href="/explore">Explore</Link>
+                <Link className="hover:text-[#FFA000] font-bold" href="/explore">Explore</Link>
               </li>
               <li>
-                <Link className="hover:text-[#FFA000]" href="/library">My Library</Link>
+                <Link className="hover:text-[#FFA000] font-bold" href="/library">My Library</Link>
               </li>
               <li>
-                <Link className="hover:text-[#FFA000]" href="/create">Create</Link>
+                <Link className="hover:text-[#FFA000] font-bold" href="/create">Create</Link>
               </li>
               <li className="flex justify-center items-center gap-2">
                 <SignedOut>
@@ -35,7 +35,7 @@ export default function Navbar() {
                   </Button>
                 </SignedOut>
                 <SignedIn>
-                  <Badge className="bg-[#4A2F2D] text-[#FFC107] hover:bg-[#4A2F2D]">Basic</Badge>
+                  <Badge className="bg-[#FFF3E0] text-[#5D4037] hover:bg-[#5D4037] hover:text-[#FFC107]">Basic</Badge>
                   <UserButton/>
                 </SignedIn>
               </li>
