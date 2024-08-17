@@ -145,7 +145,7 @@ export default function CreateFlashcardsForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={loading} onClick={() => {}} className="bg-[#FFA726] text-white">
+          <Button type="submit" disabled={loading} onClick={() => {}} className="bg-[#FFA726] hover:bg-[#FB8C00] text-[#FFF3E0]">
             {loading ? "Creating Flashcards..." : "Create"}
           </Button>
         </form>
