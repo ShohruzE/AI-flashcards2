@@ -70,85 +70,85 @@ export default function CreateFlashcardsForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name={"topic"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Topic</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="Enter a topic..." {...field} />
-              </FormControl>
-              <FormDescription>
-                Enter any topic and we&apos;ll create a flashcard set for you!
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={"difficulty"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Difficulty Level</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={""}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name={"topic"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">Topic</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose a difficulty level for your flashcards" />
-                  </SelectTrigger>
+                  <Input type="text" placeholder="Enter a topic..." {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="Easy">Easy</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="Hard">Hard</SelectItem>
-                  <SelectItem value="Very Hard">Very Hard</SelectItem>
-                  <SelectItem value="Extreme">Extreme</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Select the difficulty of the flashcards you want to create
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={"size"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Size</FormLabel>
-              <Select
-                onValueChange={(value) => field.onChange(parseInt(value))}
-                defaultValue={""}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="5">5</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Select how many flashcards you want to create
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={loading} onClick={() => {}}>
-          {loading ? "Creating Flashcards..." : "Create"}
-        </Button>
-      </form>
-    </Form>
+                <FormDescription className="text-[#FFC107]">
+                  Enter any topic and we&apos;ll create a flashcard set for you!
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"difficulty"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">Difficulty Level</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={""}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a difficulty level for your flashcards" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Easy">Easy</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Hard">Hard</SelectItem>
+                    <SelectItem value="Very Hard">Very Hard</SelectItem>
+                    <SelectItem value="Extreme">Extreme</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[#FFC107]">
+                  Select the difficulty of the flashcards you want to create
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"size"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">Size</FormLabel>
+                <Select
+                  onValueChange={(value) => field.onChange(parseInt(value))}
+                  defaultValue={""}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                    <SelectItem value="5">5</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[#FFC107]">
+                  Select how many flashcards you want to create
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={loading} onClick={() => {}} className="bg-[#FFA726] text-white">
+            {loading ? "Creating Flashcards..." : "Create"}
+          </Button>
+        </form>
+      </Form>
   );
 }

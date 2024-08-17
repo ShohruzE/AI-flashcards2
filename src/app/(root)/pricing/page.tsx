@@ -34,8 +34,8 @@ export default function Pricing() {
   };
 
   return (
-    <section className="">
-      <div className="container mx-auto bg-slate-300 p-24">
+    <section className="bg-[#5D4037] text-[#FFC107] min-h-screen">
+      <div className="container mx-auto p-24">
         <div className="flex flex-col justify-center items-center gap-8">
           <h1 className="text-3xl">Pricing</h1>
           <div className="flex justify-center items-center gap-8">
