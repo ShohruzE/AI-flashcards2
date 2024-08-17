@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from '../../../firebase.js';
-import { collection, setDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from '@clerk/nextjs/server';
 
 const systemPrompt = `You are an API that generates flashcards based on a given topic or subject. When provided with a topic, you should generate a set of x flashcards, where x is a number provided by the user between 1 and 5. You will also be provided a difficulty by the user, which can range from 'Easy', 'Medium', 'Hard', 'Very Hard', or 'Extreme'. Each flashcard does not necessarily have to be increasing in difficulty, but they should simply adhere to the difficulty provided. Each flashcard should have a "front", "back" and "hints" section. The "front" contains a question, term, or prompt, and the "back" contains the answer, definition, or explanation. The "hints" section contains a set of three progressive hints as an array, where each hint is to build on top of the previous one. Your output should be in JSON format, structured as an array of objects, each representing a flashcard.`;
@@ -49,17 +49,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const currentDate = new Date();
-    const docId = currentDate.toISOString(); // ex: "2024-08-16T14:25:36.789Z"
-
-    // Reference to the user's topic sub-collection
-    const topicCollectionRef = collection(db, 'flashcards', userId, topic);
-
-    
-    await setDoc(doc(topicCollectionRef, docId), {
+    // Create a document in the 'flashcards' collection with all data at the same level
+    await addDoc(collection(db, 'flashcards'), {
+      userId: userId,
       title: flashcards.flashcards.title,
       items: flashcards.flashcards.items,
-      createdAt: currentDate, 
+      createdAt: serverTimestamp(), // Use server timestamp for consistency
     });
 
     return NextResponse.json({ message: 'Flashcards added successfully!' });
