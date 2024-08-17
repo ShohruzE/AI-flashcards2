@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import getStripe from "@/app/api/checkout_session";
+import getStripe from "@/getStripe";
 
 export default function Pricing() {
   const handleSubmit = async () => {

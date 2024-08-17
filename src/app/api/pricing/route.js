@@ -1,6 +1,5 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
-import { loadStripe } from "@stripe/stripe-js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-06-20",
@@ -15,6 +14,8 @@ export async function GET(req) {
       throw new Error("Invalid session ID");
     }
     const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
+
+    console.log("Checkout Session:", checkoutSession); // Log the entire object
 
     return NextResponse.json(checkoutSession);
   } catch (error) {
