@@ -17,7 +17,7 @@ export default async function Home() {
       <div className="bg-[#FFF3E0] h-max w-9/12 rounded-md p-6 mt-8">
         <div className="flex justify-between items-center rounded-md">
           <div className="w-[50%]">
-            <CreateFlashcardsForm />
+            <CreateFlashcardsForm isSubscribed={isSubscribed} />
           </div>
           <Image
             width={500}

@@ -36,7 +36,11 @@ const formSchema = z.object({
   size: z.number().int().positive().default(5),
 });
 
-export default function CreateFlashcardsForm() {
+export default function CreateFlashcardsForm({
+  isSubscribed,
+}: {
+  isSubscribed: boolean;
+}) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -60,12 +64,20 @@ export default function CreateFlashcardsForm() {
     try {
       const response = await fetch("/api/create", {
         method: "POST",
-        body: JSON.stringify({ topic, difficulty, size }),
+        body: JSON.stringify({ topic, difficulty, size, isSubscribed }),
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
       const data = await response.json();
       console.log(data);
-    } catch (error) {
-      console.error("Error posting form data", error);
+    } catch (error: Error | any) {
+      toast({
+        title: "Error",
+        description: error.message,
+      });
     } finally {
       setLoading(false);
       router.push("/library");
