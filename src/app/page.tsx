@@ -13,7 +13,20 @@ export default async function Home() {
         Welcome to HoneyComb
       </h1>
       <p className="text-lg pb-10">Create flashcards instantly using AI!</p>
-      
+
+      <div className="bg-[#FFF3E0] h-max w-9/12 rounded-md p-6 mt-8">
+        <div className="flex justify-between items-center rounded-md">
+          <div className="w-[50%]">
+            <CreateFlashcardsForm isSubscribed={isSubscribed} />
+          </div>
+          <Image
+            width={500}
+            height={400}
+            src="/images/honeycomb.png"
+            alt="HoneyComb header logo"
+          />
+        </div>
+      </div>
     </section>
   );
 }

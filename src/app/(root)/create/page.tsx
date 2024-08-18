@@ -1,5 +1,4 @@
 import CreateFlashcardsForm from "@/components/CreateFlashcardsForm";
-import Image from "next/image";
 import { createCustomer, hasSubscription } from "@/lib/stripe";
 
 export default async function Create() {
@@ -7,20 +6,12 @@ export default async function Create() {
   const isSubscribed = await hasSubscription(stripeCustomerId);
 
   return (
-    <section className="bg-[#5D4037] text-[#FFC107] flex min-h-screen flex-col items-center">
-      <div className="bg-[#FFF3E0] h-max w-9/12 rounded-md p-6 mt-8">
-        <div className="flex justify-between items-center rounded-md">
-          <div className="w-[50%]">
-            <CreateFlashcardsForm isSubscribed={isSubscribed} />
-          </div>
-          <Image
-            width={500}
-            height={400}
-            src="/images/honeycomb.png"
-            alt="HoneyComb header logo"
-          />
+    <div className="bg-[#5D4037] text-[#FFC107] flex min-h-screen items-center">
+      <div className="container mx-auto justify-center pr-50">
+        <div className="w-full max-w-screen-md bg-[#4A2F2D] p-24 rounded-md drop-shadow-2xl">
+          <CreateFlashcardsForm isSubscribed={isSubscribed} />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
