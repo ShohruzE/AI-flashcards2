@@ -41,7 +41,7 @@ export default function Explore() {
             className="relative w-32 h-32 bg-yellow-500 cursor-pointer transform transition-transform hover:scale-105 text-center flex items-center justify-center text-white font-bold m-2"
             style={{
               clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
-              margin: index % 2 === 0 ? "0px 10px 20px 0px" : "20px 0px 0px 10px",
+              margin: index % 2 === 0 ? "0px 16px 16px 0px" : "16px 0px 0px 16px",
             }}
           >
             <div className="p-4 text-sm">
