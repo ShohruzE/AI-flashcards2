@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-06-20",
 });
 
@@ -31,22 +31,15 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
+    const { stripeCustomerId } = await req.json();
+
     const params = {
       mode: "subscription",
       payment_method_types: ["card"],
+      customer: stripeCustomerId,
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "Pro subscription",
-            },
-            unit_amount: 999, // $9.99 in cents
-            recurring: {
-              interval: "month",
-              interval_count: 1,
-            },
-          },
+          price: "price_1Po6wvFe9wWONWca4EY1Yx3U",
           quantity: 1,
         },
       ],
