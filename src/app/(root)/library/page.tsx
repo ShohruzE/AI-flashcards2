@@ -47,24 +47,24 @@ export default function Library() {
 
   return (
     <div className="bg-[#5D4037] text-[#FFC107] min-h-screen">
-      <div className="container flex flex-row mx-auto p-8 items-center">
-        <h1 className="text-start text-2xl font-bold pr-4">Your Flashcards</h1>
+      <div className="container mx-auto p-8 text-center">
+        <h1 className="text-2xl font-bold">Your Flashcards</h1>
         <p className="text-2xl font-medium">{flashcardSets.length}</p>
       </div>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center grid-cols-3 gap-10 p-10">
         {flashcardSets.length > 0 ? (
-          flashcardSets.map((set, index) => (
+          flashcardSets.map((set) => (
             <div
               key={set.id}
-              className="relative w-32 h-32 bg-yellow-500 cursor-pointer transform transition-transform hover:scale-105 text-center flex items-center justify-center text-white font-bold"
+              className="relative bg-[#4E342E] w-60 h-60 cursor-pointer transform transition-transform hover:scale-105 text-center flex items-center justify-center text-[#FFC107] font-bold rounded-lg shadow-md hover:shadow-lg"
               onClick={() => handleButtonClick(set.id)}
               style={{
-                clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
-                margin: index % 2 === 0 ? "0px 10px 20px 0px" : "20px 0px 0px 10px",
+                borderRadius: "8px",
               }}
             >
               <div className="p-4 text-sm">
                 <h2>{set.title}</h2>
+                <p>{set.items.length} items</p>
               </div>
             </div>
           ))
