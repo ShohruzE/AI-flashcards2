@@ -47,7 +47,10 @@ export default function Library() {
 
   return (
     <div className="bg-[#5D4037] text-[#FFC107] min-h-screen">
-      <h1>Library</h1>
+      <div className="container flex flex-row mx-auto p-8 items-center">
+        <h1 className="text-start text-2xl font-bold pr-4">Your Flashcards</h1>
+        <p className="text-2xl font-medium">{flashcardSets.length}</p>
+      </div>
       <div className="flex flex-wrap justify-center">
         {flashcardSets.length > 0 ? (
           flashcardSets.map((set, index) => (

@@ -90,19 +90,19 @@ export default function FlashcardSetPage() {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-[#5D4037] text-[#FFC107] flex flex-col min-h-screen justify-center items-center">
       <h1 className="text-2xl font-bold mb-4 text-center">{flashcardSet.title}</h1>
-      <Carousel className="w-full h-96">
+      <Carousel className="w-3/6 h-96 justify-center text-center items-center">
         <CarouselContent className="-ml-2 md:-ml-4">
           {flashcardSet.items.map((flashcard, index) => (
             <CarouselItem key={index} className="pl-2 md:pl-4">
               <div
                 className={clsx(
-                  "relative w-full h-full bg-white border rounded shadow-md cursor-pointer transition-transform duration-500",
+                  "relative w-full h-full bg-[#FFF3E0] border rounded-lg shadow-md cursor-pointer transition-transform duration-500",
                   flipped[index] ? "rotate-y-180" : ""
                 )}
                 onClick={() => handleFlipCard(index)}
-                style={{ perspective: "1000px", height: "20rem" }} // Set a fixed height for the card
+                style={{ perspective: "1000px", height: "20rem" }} 
               >
                 <div className="relative w-full h-full">
                   {/* Front Side */}
@@ -125,7 +125,7 @@ export default function FlashcardSetPage() {
                       <button
                         className="p-2 bg-blue-500 text-white rounded"
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent card flip
+                          e.stopPropagation(); 
                           handleShowNextHint(index);
                         }}
                       >
@@ -134,7 +134,7 @@ export default function FlashcardSetPage() {
                       <button
                         className="p-2 bg-red-500 text-white rounded"
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent card flip
+                          e.stopPropagation(); 
                           handleRemoveHint(index);
                         }}
                       >
@@ -159,8 +159,8 @@ export default function FlashcardSetPage() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious>Previous</CarouselPrevious>
-        <CarouselNext>Next</CarouselNext>
+        <CarouselPrevious className="bg-[#FFF3E0]">Previous</CarouselPrevious>
+        <CarouselNext className="bg-[#FFF3E0]">Next</CarouselNext>
       </Carousel>
     </div>
   );
