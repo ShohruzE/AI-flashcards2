@@ -101,27 +101,27 @@ export default function LearnFlashcard({
   }
 
   return (
-    <div className="p-4 bg-[#5D4037] text-[#FFC107] flex flex-col min-h-screen justify-center items-center">
+    <div className="w-full p-4 bg-[#5D4037] text-[#FFC107] flex flex-col min-h-screen justify-center items-center">
       <h1 className="text-2xl font-bold mb-4 text-center">
         {flashcardSet.title}
       </h1>
-      <Carousel className="w-3/6 justify-center text-center items-center">
+      <Carousel className="w-[50%] justify-center text-center items-center">
         <CarouselContent className="-ml-2 md:-ml-4">
           {flashcardSet.items.map((flashcard, index) => (
             <CarouselItem key={index} className="pl-2 md:pl-4">
               <div
                 className={clsx(
-                  "relative w-full h-full bg-[#FFF3E0] border rounded-lg shadow-md cursor-pointer transition-transform duration-500 flex justify-center items-center overflow-hidden py-4",
+                  " w-full h-full bg-[#FFF3E0] border rounded-lg shadow-md cursor-pointer transition-transform duration-500 flex justify-center items-center overflow-hidden py-4",
                   flipped[index] ? "rotate-y-180" : ""
                 )}
                 onClick={() => handleFlipCard(index)}
                 style={{ perspective: "1000px", height: "20rem" }}
               >
-                <div className="relative w-[80%] h-[80%] overflow-auto">
+                <div className=" w-[80%] h-[80%] overflow-auto">
                   {/* Front Side */}
                   <div
                     className={clsx(
-                      "relative w-full h-full flex flex-col items-center justify-center",
+                      " w-full h-full flex flex-col items-center justify-center",
                       flipped[index] ? "hidden" : "block"
                     )}
                   >
@@ -185,7 +185,7 @@ export default function LearnFlashcard({
                   {/* Back Side */}
                   <div
                     className={clsx(
-                      "relative w-full h-full flex flex-col items-center justify-center",
+                      "w-full h-full flex flex-col items-center justify-center",
                       "transform rotate-y-180",
                       flipped[index] ? "block" : "hidden"
                     )}
