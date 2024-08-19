@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase';
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
 import {
   Carousel,
   CarouselContent,
@@ -10,7 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 interface Flashcard {
   front: string;
@@ -36,7 +36,7 @@ export default function FlashcardSetPage() {
       if (!id) return;
 
       try {
-        const docRef = doc(db, 'flashcards', id as string);
+        const docRef = doc(db, "flashcards", id as string);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -48,7 +48,7 @@ export default function FlashcardSetPage() {
           console.log("No such document!");
         }
       } catch (error) {
-        console.error('Error fetching flashcard set:', error);
+        console.error("Error fetching flashcard set:", error);
       } finally {
         setLoading(false);
       }
@@ -68,7 +68,7 @@ export default function FlashcardSetPage() {
   const handleShowNextHint = (index: number) => {
     setShownHints((prev) => {
       const newHints = [...prev];
-      newHints[index] = Math.min(newHints[index] + 1, 3);  
+      newHints[index] = Math.min(newHints[index] + 1, 3);
       return newHints;
     });
   };
@@ -76,7 +76,7 @@ export default function FlashcardSetPage() {
   const handleRemoveHint = (index: number) => {
     setShownHints((prev) => {
       const newHints = [...prev];
-      newHints[index] = Math.max(newHints[index] - 1, 0);  
+      newHints[index] = Math.max(newHints[index] - 1, 0);
       return newHints;
     });
   };
@@ -91,50 +91,56 @@ export default function FlashcardSetPage() {
 
   return (
     <div className="p-4 bg-[#5D4037] text-[#FFC107] flex flex-col min-h-screen justify-center items-center">
-      <h1 className="text-2xl font-bold mb-4 text-center">{flashcardSet.title}</h1>
-      <Carousel className="w-3/6 h-96 justify-center text-center items-center">
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        {flashcardSet.title}
+      </h1>
+      <Carousel className="w-3/6 h-full justify-center text-center items-center">
         <CarouselContent className="-ml-2 md:-ml-4">
           {flashcardSet.items.map((flashcard, index) => (
             <CarouselItem key={index} className="pl-2 md:pl-4">
               <div
                 className={clsx(
-                  "relative w-full h-full bg-[#FFF3E0] border rounded-lg shadow-md cursor-pointer transition-transform duration-500",
+                  "relative w-full h-full bg-[#FFF3E0] border rounded-lg shadow-md cursor-pointer transition-transform duration-500 flex justify-center items-center overflow-hidden py-4",
                   flipped[index] ? "rotate-y-180" : ""
                 )}
                 onClick={() => handleFlipCard(index)}
-                style={{ perspective: "1000px", height: "20rem" }} 
+                style={{ perspective: "1000px", height: "20rem" }}
               >
-                <div className="relative w-full h-full">
+                <div className="relative w-[80%] h-[80%] overflow-auto">
                   {/* Front Side */}
                   <div
                     className={clsx(
-                      "absolute w-full h-full flex flex-col items-center justify-center p-4",
+                      "relative w-full h-full flex flex-col items-center justify-center p-4",
                       flipped[index] ? "hidden" : "block"
                     )}
                   >
                     <h2 className="text-lg font-semibold">Question:</h2>
-                    <p>{flashcard.front}</p>
+                    <h3 className="text-4xl font-bold">{flashcard.front}</h3>
 
                     <div className="mt-4 space-y-2">
-                      {flashcard.hints.slice(0, shownHints[index] || 0).map((hint, hintIndex) => (
-                        <p key={hintIndex} className="text-gray-700">{hint}</p>
-                      ))}
+                      {flashcard.hints
+                        .slice(0, shownHints[index] || 0)
+                        .map((hint, hintIndex) => (
+                          <p key={hintIndex} className="text-gray-700">
+                            {hint}
+                          </p>
+                        ))}
                     </div>
 
                     <div className="mt-4 flex justify-center space-x-2">
                       <button
-                        className="p-2 bg-blue-500 text-white rounded"
+                        className="p-2 bg-blue-500 text-white rounded transform transition-transform hover:scale-105"
                         onClick={(e) => {
-                          e.stopPropagation(); 
+                          e.stopPropagation();
                           handleShowNextHint(index);
                         }}
                       >
                         Show Next Hint
                       </button>
                       <button
-                        className="p-2 bg-red-500 text-white rounded"
+                        className="p-2 bg-red-500 text-white rounded transform transition-transform hover:scale-105"
                         onClick={(e) => {
-                          e.stopPropagation(); 
+                          e.stopPropagation();
                           handleRemoveHint(index);
                         }}
                       >
@@ -146,13 +152,13 @@ export default function FlashcardSetPage() {
                   {/* Back Side */}
                   <div
                     className={clsx(
-                      "absolute w-full h-full flex flex-col items-center justify-center p-4",
+                      "relative w-full h-full flex flex-col items-center justify-center p-4",
                       "transform rotate-y-180",
                       flipped[index] ? "block" : "hidden"
                     )}
                   >
                     <h2 className="text-lg font-semibold">Answer:</h2>
-                    <p>{flashcard.back}</p>
+                    <h3 className="text-4xl font-bold">{flashcard.back}</h3>
                   </div>
                 </div>
               </div>

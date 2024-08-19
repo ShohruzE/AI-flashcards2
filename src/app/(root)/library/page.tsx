@@ -52,11 +52,7 @@ export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
   }, [userId]);
 
   const handleButtonClick = (setId: string) => {
-    if (isSubscribed) {
-      router.push(`/learn/${setId}`);
-    } else {
-      // Handle subscription error or prompt
-    }
+    router.push(`/learn/${setId}`);
   };
 
   return (

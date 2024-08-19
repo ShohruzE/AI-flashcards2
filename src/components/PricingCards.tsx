@@ -13,22 +13,26 @@ import { Button } from "@/components/ui/button";
 import getStripe from "@/getStripe";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Check, BadgeCheck } from "lucide-react";
 
 export default function PricingCards({
   stripeCustomerId,
+  isSubscribed,
+  checkoutSessionURL,
 }: {
   stripeCustomerId: string;
+  isSubscribed: boolean;
+  checkoutSessionURL: string;
 }) {
   const { userId } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async () => {
+  const handlePurchaseSubscription = async () => {
     if (!userId) {
       router.push("/sign-in");
       return;
     }
-
-    console.log(stripeCustomerId);
 
     const checkoutSession = await fetch("/api/pricing", {
       method: "POST",
@@ -38,7 +42,6 @@ export default function PricingCards({
       body: JSON.stringify({ stripeCustomerId }),
     });
     const checkoutSessionJson = await checkoutSession.json();
-    console.log(checkoutSessionJson);
     const stripe = await getStripe();
 
     const { error } = await stripe.redirectToCheckout({
@@ -52,40 +55,73 @@ export default function PricingCards({
 
   return (
     <div className="flex justify-center items-center gap-8">
-      <Card className="w-[350px]">
-        <CardHeader>
+      <Card className="w-[400px]">
+        <CardHeader className="space-y-4">
           <CardTitle>Basic</CardTitle>
-          <CardTitle className="text-3xl">Free</CardTitle>
-          <CardDescription>
-            Enjoy limited features of our product!
-          </CardDescription>
+          <div>
+            <CardTitle className="text-4xl">Free</CardTitle>
+            <CardDescription>
+              Enjoy limited features of our product!
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <ul>
-            <li>Feature 1</li>
-            <li>Feature 2</li>
-            <li>Feature 3</li>
+            <li className="flex gap-2">
+              <Check className="text-green-500 text-sm" size={20} />
+              Create up to 5 flashcard sets!
+            </li>
+            <li className="flex gap-2">
+              <Check className="text-green-500 text-sm" size={20} />
+              Learn from your own created sets!
+            </li>
+            <li className="flex gap-2">
+              <Check className="text-green-500 text-sm" size={20} />
+              View other people's created sets!
+            </li>
           </ul>
         </CardContent>
         <CardFooter>
-          <Button disabled>Current</Button>
+          <Button disabled={!isSubscribed}>
+            <Link href={checkoutSessionURL}>
+              {isSubscribed ? `Unsubscribe` : `Current`}
+            </Link>
+          </Button>
         </CardFooter>
       </Card>
-      <Card className="w-[350px]">
-        <CardHeader>
+      <Card className="w-[400px]">
+        <CardHeader className="space-y-4">
           <CardTitle>Premium</CardTitle>
-          <CardTitle className="text-3xl">$9.99</CardTitle>
-          <CardDescription>Enjoy all of our product features!</CardDescription>
+          <div>
+            <CardTitle className="flex gap-2">
+              <span className="text-4xl">$9.99</span>
+              <span className="text-sm font-normal">/ month</span>
+            </CardTitle>
+            <CardDescription>
+              Enjoy all of our product features!
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <ul>
-            <li>Feature 1</li>
-            <li>Feature 2</li>
-            <li>Feature 3</li>
+            <li className="flex gap-2">
+              <BadgeCheck className="text-green-500" size={20} />
+              Create unlimited flashcard sets!
+            </li>
+            <li className="flex gap-2">
+              <BadgeCheck className="text-green-500" size={20} />
+              Learn from other people's created sets!
+            </li>
+            <li className="flex gap-2">
+              <BadgeCheck className="text-green-500" size={20} />
+              Unlock hints for your flashcards!
+            </li>
           </ul>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleSubmit}>Purchase</Button>
+          <Button disabled={isSubscribed} onClick={handlePurchaseSubscription}>
+            {isSubscribed ? `Current` : `Purchase`}
+          </Button>
         </CardFooter>
       </Card>
     </div>

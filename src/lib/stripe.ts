@@ -12,9 +12,8 @@ export const stripe = new Stripe(String(process.env.STRIPE_SECRET_KEY), {
 export async function hasSubscription(stripeCustomerId: string) {
   const subscriptions = await stripe.subscriptions.list({
     customer: stripeCustomerId,
+    status: "active",
   });
-
-  console.log(subscriptions);
 
   return subscriptions.data.length > 0;
 }
@@ -22,26 +21,41 @@ export async function hasSubscription(stripeCustomerId: string) {
 export async function createCustomer() {
   const clerkUser = await currentUser();
 
-  if (clerkUser) {
-    const usersRef = doc(db, "users", clerkUser?.id);
-    const docSnap = await getDoc(usersRef);
-
-    if (!docSnap.exists()) {
-      const customer = await stripe.customers.create({
-        name: clerkUser?.firstName + " " + clerkUser?.lastName,
-        email: clerkUser?.emailAddresses[0].emailAddress,
-      });
-
-      const userDocRef = doc(db, "users", clerkUser?.id);
-      await setDoc(
-        userDocRef,
-        { stripeCustomerId: customer.id },
-        { merge: true }
-      );
-
-      return customer.id;
-    }
-    return docSnap.data().stripeCustomerId;
+  if (!clerkUser) {
+    console.error("No user found");
+    return;
   }
-  return null;
+  const usersRef = doc(db, "users", clerkUser?.id);
+  const docSnap = await getDoc(usersRef);
+
+  if (!docSnap.exists()) {
+    const customer = await stripe.customers.create({
+      name: clerkUser?.firstName + " " + clerkUser?.lastName,
+      email: clerkUser?.emailAddresses[0].emailAddress,
+    });
+
+    const userDocRef = doc(db, "users", clerkUser?.id);
+    await setDoc(
+      userDocRef,
+      { stripeCustomerId: customer.id },
+      { merge: true }
+    );
+
+    return customer.id;
+  }
+  return docSnap.data().stripeCustomerId;
+}
+
+export async function createCheckoutSessionURL(stripeCustomerId: string) {
+  try {
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: stripeCustomerId,
+      return_url: "http://localhost:3000/",
+    });
+
+    return portalSession.url;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
 }
