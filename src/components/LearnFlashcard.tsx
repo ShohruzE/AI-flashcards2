@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import {
@@ -36,6 +36,7 @@ export default function LearnFlashcard({
   isSubscribed: boolean;
 }) {
   const params = useParams();
+  const router = useRouter();
   const { id } = params;
   const [flashcardSet, setFlashcardSet] = useState<FlashcardSet | null>(null);
   const [loading, setLoading] = useState(true);
@@ -102,6 +103,14 @@ export default function LearnFlashcard({
 
   return (
     <div className="w-full p-4 bg-[#5D4037] text-[#FFC107] flex flex-col min-h-screen justify-center items-center">
+      <div className="absolute top-28 left-10">
+        <Button 
+          onClick={() => router.back()} 
+          className="items-start justify-start bg-[#4A2F2D] text-[#FFC107] rounded transform transition-transform hover:scale-105"
+          >
+          Back
+        </Button>
+      </div>
       <h1 className="text-2xl font-bold mb-4 text-center">
         {flashcardSet.title}
       </h1>
