@@ -24,7 +24,7 @@ interface FlashcardSet {
   items: any[];
 }
 
-export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
+export default function Library() {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
