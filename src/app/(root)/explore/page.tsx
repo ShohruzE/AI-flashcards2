@@ -1,5 +1,8 @@
 import { createCustomer, hasSubscription } from "@/lib/stripe";
 import FlashcardSetsList from "@/components/FlashcardSetsList";
+import dynamic from "next/dynamic";
+
+const BeeCursor = dynamic(() => import("@/components/BeeCursor"), { ssr: false });
 
 export default async function Explore() {
   const stripeCustomerId = await createCustomer();
@@ -11,6 +14,7 @@ export default async function Explore() {
       <div className="flex flex-wrap justify-center">
         <FlashcardSetsList isSubscribed={isSubscribed} />
       </div>
+      <BeeCursor/>
     </div>
   );
 }

@@ -1,5 +1,8 @@
 import CreateFlashcardsForm from "@/components/CreateFlashcardsForm";
 import { createCustomer, hasSubscription } from "@/lib/stripe";
+import dynamic from "next/dynamic";
+
+const BeeCursor = dynamic(() => import("@/components/BeeCursor"), { ssr: false });
 
 export default async function Create() {
   const stripeCustomerId = await createCustomer();
@@ -12,6 +15,7 @@ export default async function Create() {
           <CreateFlashcardsForm isSubscribed={isSubscribed} />
         </div>
       </div>
+      <BeeCursor/>
     </div>
   );
 }

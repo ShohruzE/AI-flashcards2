@@ -16,6 +16,9 @@ import { useAuth } from "@clerk/nextjs";
 import { FolderPen, Trash2 } from "lucide-react";
 import EditModal from "@/components/EditModal";
 import DeleteModal from "@/components/DeleteModal";
+import dynamic from "next/dynamic";
+
+const BeeCursor = dynamic(() => import("@/components/BeeCursor"), { ssr: false });
 
 interface FlashcardSet {
   id: string;
@@ -102,6 +105,7 @@ export default function Library() {
 
   return (
     <div className="bg-[#5D4037] text-[#FFC107] min-h-screen">
+      <BeeCursor/>
       <div className="container flex flex-row mx-auto p-8 items-center">
         <h1 className="text-start text-2xl font-bold pr-4">Your Flashcards</h1>
         <p className="text-2xl font-medium">{flashcardSets.length}</p>

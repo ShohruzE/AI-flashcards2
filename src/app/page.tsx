@@ -4,6 +4,9 @@ import { createCustomer, hasSubscription } from "@/lib/stripe";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Sparkle, Users, Book } from "lucide-react";
 import FlashcardSetsList from "@/components/FlashcardSetsList";
+import dynamic from "next/dynamic";
+
+const BeeCursor = dynamic(() => import("@/components/BeeCursor"), { ssr: false });
 
 export default async function Home() {
   const stripeCustomerId = await createCustomer();
@@ -63,6 +66,7 @@ export default async function Home() {
           </Card>
         </div>
       </section>
+      <BeeCursor/>
     </div>
   );
 }

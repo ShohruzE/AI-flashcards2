@@ -4,6 +4,9 @@ import {
   createCheckoutSessionURL,
 } from "@/lib/stripe";
 import PricingCards from "@/components/PricingCards";
+import dynamic from "next/dynamic";
+
+const BeeCursor = dynamic(() => import("@/components/BeeCursor"), { ssr: false });
 
 export default async function Pricing() {
   const stripeCustomerId = await createCustomer();
@@ -31,6 +34,7 @@ export default async function Pricing() {
           />
         </div>
       </div>
+      <BeeCursor/>
     </section>
   );
 }
