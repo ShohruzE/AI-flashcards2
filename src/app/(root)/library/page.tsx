@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; 
-import { collection, query, where, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { useAuth } from '@clerk/nextjs';
-import { FolderPen, Trash2 } from 'lucide-react';
-import EditModal from '@/components/EditModal';
-import DeleteModal from '@/components/DeleteModal';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../../firebase";
+import { useAuth } from "@clerk/nextjs";
+import { FolderPen, Trash2 } from "lucide-react";
+import EditModal from "@/components/EditModal";
+import DeleteModal from "@/components/DeleteModal";
 
 interface FlashcardSet {
   id: string;
@@ -20,8 +28,8 @@ export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState<string>('');
-  const [newTitle, setNewTitle] = useState<string>('');
+  const [isDeleting, setIsDeleting] = useState<string>("");
+  const [newTitle, setNewTitle] = useState<string>("");
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
@@ -58,32 +66,35 @@ export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
 
   const editFlashcardSetName = async (setId: string) => {
     try {
-      const set = doc(db, 'flashcards', setId);
+      const set = doc(db, "flashcards", setId);
       await updateDoc(set, { title: newTitle });
-      setFlashcardSets((prevSets) => //displays new title
-        prevSets.map((set) =>
-          set.id === setId ? { ...set, title: newTitle } : set
-        )
+      setFlashcardSets(
+        (
+          prevSets //displays new title
+        ) =>
+          prevSets.map((set) =>
+            set.id === setId ? { ...set, title: newTitle } : set
+          )
       );
       setIsEditing(null);
-      setNewTitle('');
+      setNewTitle("");
       setIsEditModalOpen(false);
     } catch (error) {
-      console.error('Error updating flashcard set:', error);
+      console.error("Error updating flashcard set:", error);
     }
   };
 
   const deleteFlashcardSet = async (setId: string) => {
     try {
-      await deleteDoc(doc(db, 'flashcards', setId));
+      await deleteDoc(doc(db, "flashcards", setId));
       setFlashcardSets((prevSets) =>
         prevSets.filter((set) => set.id !== setId)
       );
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting flashcard set:', error);
+      console.error("Error deleting flashcard set:", error);
     }
-  }
+  };
 
   const handleButtonClick = (setId: string) => {
     router.push(`/learn/${setId}`);
@@ -106,9 +117,9 @@ export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
                 borderRadius: "8px",
               }}
             >
-              <div className="p-4 text-sm">
-                <h2>{set.title}</h2>
-                <p>{set.items.length} items</p>
+              <div className="p-4">
+                <h2 className="font-bold text-md">{set.title}</h2>
+                <p className="font-normal text-sm">{set.items.length} items</p>
               </div>
               <button
                 className="absolute bottom-2 left-2 hover:text-white"
@@ -121,14 +132,14 @@ export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
               >
                 <FolderPen size={24} />
               </button>
-              <button 
+              <button
                 className="absolute bottom-2 left-10 hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsDeleting(set.id);
                   setIsDeleteModalOpen(true);
                 }}
-                >
+              >
                 <Trash2 size={24} />
               </button>
             </div>

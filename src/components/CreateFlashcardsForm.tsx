@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,6 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAuth } from "@clerk/nextjs";
 
 const formSchema = z.object({
   topic: z.string().min(2, {
@@ -43,7 +44,9 @@ export default function CreateFlashcardsForm({
 }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const { toast } = useToast();
+  const { userId } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,31 +58,35 @@ export default function CreateFlashcardsForm({
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { topic, difficulty, size } = values;
-    setLoading(true);
-    toast({
-      title: "Creating flashcards...",
-      description: "Please wait while we generate your flashcards",
-    });
-    try {
-      const response = await fetch("/api/create", {
-        method: "POST",
-        body: JSON.stringify({ topic, difficulty, size, isSubscribed }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error);
-      }
-      const data = await response.json();
-    } catch (error: Error | any) {
+    if (userId) {
+      const { topic, difficulty, size } = values;
+      setLoading(true);
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Creating flashcards...",
+        description: "Please wait while we generate your flashcards",
       });
-    } finally {
-      setLoading(false);
-      router.push("/library");
+      try {
+        const response = await fetch("/api/create", {
+          method: "POST",
+          body: JSON.stringify({ topic, difficulty, size, isSubscribed }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error);
+        }
+        const data = await response.json();
+      } catch (error: Error | any) {
+        toast({
+          title: "Error",
+          description: error.message,
+        });
+      } finally {
+        setLoading(false);
+        router.push("/library");
+      }
+    } else {
+      router.push("/sign-in");
     }
   };
 
