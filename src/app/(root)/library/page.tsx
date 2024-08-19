@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import { collection, query, where, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -15,7 +16,7 @@ interface FlashcardSet {
   items: any[];
 }
 
-export default function Library() {
+export default function Library({ isSubscribed }: { isSubscribed: boolean }) {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -29,17 +30,27 @@ export default function Library() {
     const fetchFlashcardSets = async () => {
       if (!userId) return;
       try {
-        const q = query(collection(db, 'flashcards'), where('userId', '==', userId));
+        const q = query(
+          collection(db, "flashcards"),
+          where("userId", "==", userId)
+        );
         const querySnapshot = await getDocs(q);
         const sets: FlashcardSet[] = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-          sets.push({ id: doc.id, title: data.title, createdAt, items: data.items });
+          const createdAt = data.createdAt?.toDate
+            ? data.createdAt.toDate()
+            : new Date(data.createdAt);
+          sets.push({
+            id: doc.id,
+            title: data.title,
+            createdAt,
+            items: data.items,
+          });
         });
         setFlashcardSets(sets);
       } catch (error) {
-        console.error('Error fetching flashcard sets:', error);
+        console.error("Error fetching flashcard sets:", error);
       }
     };
     fetchFlashcardSets();

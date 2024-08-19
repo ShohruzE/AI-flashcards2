@@ -15,8 +15,6 @@ export async function GET(req) {
     }
     const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
 
-    console.log("Checkout Session:", checkoutSession); // Log the entire object
-
     return NextResponse.json(checkoutSession);
   } catch (error) {
     console.error("Error fetching checkout session:", error);

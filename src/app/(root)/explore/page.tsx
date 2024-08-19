@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { createCustomer, hasSubscription } from "@/lib/stripe";
 import FlashcardSetsList from "@/components/FlashcardSetsList";
 

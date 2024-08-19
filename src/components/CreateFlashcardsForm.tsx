@@ -72,7 +72,6 @@ export default function CreateFlashcardsForm({
         throw new Error(error.error);
       }
       const data = await response.json();
-      console.log(data);
     } catch (error: Error | any) {
       toast({
         title: "Error",
