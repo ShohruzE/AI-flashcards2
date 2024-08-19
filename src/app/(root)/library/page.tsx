@@ -1,9 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { useAuth } from '@clerk/nextjs';
+import { FolderPen, Trash2 } from 'lucide-react';
+import EditModal from '@/components/EditModal';
+import DeleteModal from '@/components/DeleteModal';
 
 interface FlashcardSet {
   id: string;
@@ -15,31 +18,61 @@ interface FlashcardSet {
 export default function Library() {
   const { userId } = useAuth();
   const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([]);
+  const [isEditing, setIsEditing] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<string>('');
+  const [newTitle, setNewTitle] = useState<string>('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchFlashcardSets = async () => {
       if (!userId) return;
-
       try {
         const q = query(collection(db, 'flashcards'), where('userId', '==', userId));
         const querySnapshot = await getDocs(q);
-
         const sets: FlashcardSet[] = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
           sets.push({ id: doc.id, title: data.title, createdAt, items: data.items });
         });
-
         setFlashcardSets(sets);
       } catch (error) {
         console.error('Error fetching flashcard sets:', error);
       }
     };
-
     fetchFlashcardSets();
   }, [userId]);
+
+  const editFlashcardSetName = async (setId: string) => {
+    try {
+      const set = doc(db, 'flashcards', setId);
+      await updateDoc(set, { title: newTitle });
+      setFlashcardSets((prevSets) => //displays new title
+        prevSets.map((set) =>
+          set.id === setId ? { ...set, title: newTitle } : set
+        )
+      );
+      setIsEditing(null);
+      setNewTitle('');
+      setIsEditModalOpen(false);
+    } catch (error) {
+      console.error('Error updating flashcard set:', error);
+    }
+  };
+
+  const deleteFlashcardSet = async (setId: string) => {
+    try {
+      await deleteDoc(doc(db, 'flashcards', setId));
+      setFlashcardSets((prevSets) =>
+        prevSets.filter((set) => set.id !== setId)
+      );
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Error deleting flashcard set:', error);
+    }
+  }
 
   const handleButtonClick = (setId: string) => {
     router.push(`/learn/${setId}`);
@@ -47,11 +80,11 @@ export default function Library() {
 
   return (
     <div className="bg-[#5D4037] text-[#FFC107] min-h-screen">
-      <div className="container mx-auto p-8 text-center">
-        <h1 className="text-2xl font-bold">Your Flashcards</h1>
+      <div className="container flex flex-row mx-auto p-8 items-center">
+        <h1 className="text-start text-2xl font-bold pr-4">Your Flashcards</h1>
         <p className="text-2xl font-medium">{flashcardSets.length}</p>
       </div>
-      <div className="flex flex-wrap justify-center grid-cols-3 gap-10 p-10">
+      <div className="container mx-auto flex flex-wrap justify-start gap-10">
         {flashcardSets.length > 0 ? (
           flashcardSets.map((set) => (
             <div
@@ -66,12 +99,45 @@ export default function Library() {
                 <h2>{set.title}</h2>
                 <p>{set.items.length} items</p>
               </div>
+              <button
+                className="absolute bottom-2 left-2 hover:text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsEditing(set.id);
+                  setNewTitle(set.title);
+                  setIsEditModalOpen(true);
+                }}
+              >
+                <FolderPen size={24} />
+              </button>
+              <button 
+                className="absolute bottom-2 left-10 hover:text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDeleting(set.id);
+                  setIsDeleteModalOpen(true);
+                }}
+                >
+                <Trash2 size={24} />
+              </button>
             </div>
           ))
         ) : (
           <p>No flashcard sets found.</p>
         )}
       </div>
+      <EditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={() => editFlashcardSetName(isEditing!)}
+        title={newTitle}
+        setTitle={setNewTitle}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={() => deleteFlashcardSet(isDeleting)}
+      />
     </div>
   );
 }
