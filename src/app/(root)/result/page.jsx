@@ -39,12 +39,14 @@ export default function ResultPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto">
-        <div className="flex min-h-screen justify-center items-center">
-          <div className="bg-slate-400 text-black w-full p-16 rounded-xl flex flex-col gap-6">
-            <h1 className="font-bold text-3xl">Result</h1>
-            <div>
-              <Progress value={75} className="w-[50%]" />
+      <div className="bg-[#5D4037] text-[#FFC107]">
+        <div className="container mx-auto">
+          <div className="flex min-h-screen justify-center items-center">
+            <div className="w-full p-16 rounded-xl flex flex-col justify-center items-center gap-6">
+              <h1 className="font-bold text-3xl">Result</h1>
+              <div>
+                <Progress value={75} className="w-[50%] bg-white text-black" />
+              </div>
             </div>
           </div>
         </div>
@@ -53,20 +55,21 @@ export default function ResultPage() {
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="flex min-h-screen justify-center items-center">
-        <div className="bg-slate-500 text-black w-full p-16 rounded-xl flex flex-col gap-6">
-          <h1 className="font-bold text-3xl">Result</h1>
-          {error && <div>{error}</div>}
-          {paymentStatus === "paid" ? (
+    <div className="bg-[#5D4037] text-[#FFC107]">
+      <div className="container mx-auto">
+        <div className="flex min-h-screen justify-center items-center">
+          <div className="w-full p-16 rounded-xl flex flex-col justify-center items-center gap-6">
+            <h1 className="font-bold text-3xl">Result</h1>
             <div>
-              <h2>Payment successful!</h2>
+              <Progress value={75} className="w-[50%]" />
             </div>
-          ) : (
-            <div>
-              <h2>Payment failed!</h2>
-            </div>
-          )}
+            {error && <p className="text-red-500">{error}</p>}
+            {paymentStatus === "paid" ? (
+              <h4 className="text-green-500 text-5xl">Payment successful!</h4>
+            ) : (
+              <h4 className="text-red-500 text-5xl">Payment failed!</h4>
+            )}
+          </div>
         </div>
       </div>
     </div>

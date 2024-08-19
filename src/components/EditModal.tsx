@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,14 +19,21 @@ interface ModalProps {
   setTitle: (title: string) => void;
 }
 
-const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, title, setTitle }) => {
+const EditModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onSave,
+  title,
+  setTitle,
+}) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Flashcard Set Title</DialogTitle>
           <DialogDescription>
-            Make changes to the set title here. Click save when you're done.
+            Make changes to the set title here. Click save when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -43,8 +50,12 @@ const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, title, setTi
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button type="submit" onClick={onSave}>Save changes</Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" onClick={onSave}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
