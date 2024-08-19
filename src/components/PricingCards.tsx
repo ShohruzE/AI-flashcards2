@@ -77,7 +77,7 @@ export default function PricingCards({
             </li>
             <li className="flex gap-2">
               <Check className="text-green-500 text-sm" size={20} />
-              View other people's created sets!
+              View other people&apos;s created sets!
             </li>
           </ul>
         </CardContent>
@@ -110,7 +110,7 @@ export default function PricingCards({
             </li>
             <li className="flex gap-2">
               <BadgeCheck className="text-green-500" size={20} />
-              Learn from other people's created sets!
+              Learn from other people&apos;s created sets!
             </li>
             <li className="flex gap-2">
               <BadgeCheck className="text-green-500" size={20} />
